@@ -10,4 +10,8 @@ public interface IssueService {
     ResponseEntity<ApiResponse> getAll();
 
     ResponseEntity<ApiResponse> getIssue(Integer id);
+
+    ResponseEntity<ApiResponse> updateIssue(Integer id, IssueRequest issueRequest);
+
+    ResponseEntity<ApiResponse> getIssuesByProject(Integer projectId);
 }

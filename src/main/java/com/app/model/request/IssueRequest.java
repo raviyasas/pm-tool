@@ -8,8 +8,6 @@ import lombok.Data;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 public class IssueRequest {
@@ -18,12 +16,25 @@ public class IssueRequest {
     @Enumerated(EnumType.STRING)
     private IssueType issueType;
 
-    @JsonProperty("current_status")
+    @JsonProperty("current_state")
     @Enumerated(EnumType.STRING)
     private IssueState issueState;
 
+    @JsonProperty("created_user")
     private String createdUser;
-    private List<ChangeLog> changeLog;
+
+    @JsonProperty("change_log")
+    private ChangeLog changeLog;
+
+    @JsonProperty("issue_description")
     private String issueDescription;
+
+    @JsonProperty("project_id")
     private Integer projectId;
+
+    @JsonProperty("issue_id")
+    private Integer issueId;
+
+    @JsonProperty("user_id")
+    private Integer userId;
 }

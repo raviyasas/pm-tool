@@ -14,10 +14,6 @@ public enum CommonMessage {
     private final int value;
     private String message;
 
-    CommonMessage(int value) {
-        this.value = value;
-    }
-
     CommonMessage(int value, String message) {
         this.value = value;
         this.message = message;

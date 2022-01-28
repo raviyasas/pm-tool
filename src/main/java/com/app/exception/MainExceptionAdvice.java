@@ -28,4 +28,16 @@ public class MainExceptionAdvice {
         return commonResponse.buildResponse(HttpStatus.NOT_FOUND.value(), CommonMessage.NOT_FOUND.value(),
                 ex.getMessage());
     }
+
+    @ExceptionHandler(BadRequestException.class)
+    public final ResponseEntity<ApiResponse> handleBadRequestException (BadRequestException ex) {
+        return commonResponse.buildResponse(HttpStatus.BAD_REQUEST.value(), CommonMessage.BAD_REQUEST.value(),
+                ex.getMessage());
+    }
+
+    @ExceptionHandler(InvalidRequestException.class)
+    public final ResponseEntity<ApiResponse> handleInvalidRequestException (InvalidRequestException ex) {
+        return commonResponse.buildResponse(HttpStatus.BAD_REQUEST.value(), CommonMessage.BAD_REQUEST.value(),
+                ex.getMessage());
+    }
 }

@@ -50,7 +50,7 @@ public class ProjectServiceImpl implements ProjectService {
     public ResponseEntity<ApiResponse> getAll() {
         List<Project> projectList = projectRepository.findAll();
 
-        if(projectList == null && projectList.isEmpty()){
+        if(projectList == null || projectList.isEmpty()){
             throw new DataNotFoundException("Project details are empty");
         }
         return commonResponse

@@ -4,18 +4,21 @@ import com.app.model.common.BaseModel;
 import com.app.model.enums.IssueState;
 import com.app.model.enums.IssueType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-import org.springframework.boot.jackson.JsonComponent;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "ISSUE")
+@EqualsAndHashCode
 public class Issue extends BaseModel {
 
     @Id
@@ -31,18 +34,28 @@ public class Issue extends BaseModel {
     @Enumerated(EnumType.STRING)
     private IssueState issueState;
 
+    @JsonProperty("created_date")
     private LocalDateTime createdDate;
     private String createdUser;
-    @ElementCollection
-    private List<ChangeLog> changeLog;
+
+    @JsonProperty("issue_description")
     private String issueDescription;
+
+    @JsonProperty("project_id")
     @Column(name = "issue_project_id")
     private Integer projectId;
+    private Boolean isAssigned;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "project_id", nullable = false)
-    //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JsonIgnore
     private Project project;
+
+    @ManyToMany(mappedBy = "issues")
+    @JsonIgnore
+    private List<AppUser> users = new ArrayList<>();
+
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "issue")
+    private List<ChangeLog> changeLog;
 
 }

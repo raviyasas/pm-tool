@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ProjectController {
 
     private static final Logger logger = LoggerFactory.getLogger(ProjectController.class);
@@ -31,7 +32,7 @@ public class ProjectController {
     }
 
     @GetMapping("/projects/{id}")
-    private ResponseEntity<ApiResponse> getProject(@PathVariable Integer id) {
+    public ResponseEntity<ApiResponse> getProject(@PathVariable Integer id) {
         logger.info("Retrieve project API for projectId: {}", id);
         return projectService.getProject(id);
     }
