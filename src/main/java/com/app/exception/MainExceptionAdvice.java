@@ -40,4 +40,10 @@ public class MainExceptionAdvice {
         return commonResponse.buildResponse(HttpStatus.BAD_REQUEST.value(), CommonMessage.BAD_REQUEST.value(),
                 ex.getMessage());
     }
+
+    @ExceptionHandler(EmailException.class)
+    public final ResponseEntity<ApiResponse> handleEmailException (EmailException ex) {
+        return commonResponse.buildResponse(HttpStatus.BAD_GATEWAY.value(), CommonMessage.BAD_GATEWAY.value(),
+                ex.getMessage());
+    }
 }

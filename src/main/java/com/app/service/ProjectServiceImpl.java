@@ -1,12 +1,17 @@
 package com.app.service;
 
 import com.app.exception.DataNotFoundException;
+import com.app.model.AppUser;
 import com.app.model.Project;
 import com.app.model.common.ApiResponse;
 import com.app.model.common.CommonResponse;
 import com.app.model.request.ProjectRequest;
 import com.app.repository.ProjectRepository;
+import com.app.repository.UserRepository;
 import com.app.util.CommonMessage;
+import com.app.util.Projectvalidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +26,13 @@ import java.util.Optional;
 @Transactional
 public class ProjectServiceImpl implements ProjectService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ProjectServiceImpl.class);
+
     @Autowired
     private ProjectRepository projectRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private CommonResponse commonResponse;
@@ -30,8 +40,11 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ResponseEntity<ApiResponse> saveProject(ProjectRequest projectRequest) {
 
-        if(projectRequest == null || projectRequest.getProjectName() == null){
-            throw new DataNotFoundException("Project data required");
+        // validate project request
+        Projectvalidator.validateProject(projectRequest);
+
+        if(userRepository.findByUsername(projectRequest.getCreatedUser()) == null){
+            throw new DataNotFoundException("Username not found");
         }
 
         Project project = new Project();
@@ -41,7 +54,7 @@ public class ProjectServiceImpl implements ProjectService {
         project.setCreatedUser(projectRequest.getCreatedUser());
 
         projectRepository.save(project);
-
+        logger.debug("New project has been added - data: {}", project);
         return commonResponse.buildResponse(HttpStatus.CREATED.value(), CommonMessage.SUCCESS.value(),
                 CommonMessage.SUCCESS.message());
     }
@@ -53,6 +66,8 @@ public class ProjectServiceImpl implements ProjectService {
         if(projectList == null || projectList.isEmpty()){
             throw new DataNotFoundException("Project details are empty");
         }
+
+        logger.debug("Receiving all project details - data: {}", projectList);
         return commonResponse
                 .buildResponse(HttpStatus.OK.value(), CommonMessage.SUCCESS.value(), CommonMessage.SUCCESS.message(),
                         projectList);
@@ -62,6 +77,12 @@ public class ProjectServiceImpl implements ProjectService {
     public ResponseEntity<ApiResponse> getProject(Integer id) {
 
         Optional<Project> project = projectRepository.findById(id);
+
+        if(project == null || project.isEmpty()){
+            throw new DataNotFoundException("Project details are empty");
+        }
+
+        logger.debug("Retrieving project data for projectId: {} - data: {}", id, project);
         return commonResponse
                 .buildResponse(HttpStatus.OK.value(), CommonMessage.SUCCESS.value(), CommonMessage.SUCCESS.message(),
                         project);

@@ -30,12 +30,14 @@ public class Issue extends BaseModel {
     @Enumerated(EnumType.STRING)
     private IssueType issueType;
 
-    @JsonProperty("current_status")
+    @JsonProperty("current_state")
     @Enumerated(EnumType.STRING)
     private IssueState issueState;
 
     @JsonProperty("created_date")
     private LocalDateTime createdDate;
+
+    @JsonProperty("created_user")
     private String createdUser;
 
     @JsonProperty("issue_description")
@@ -45,6 +47,8 @@ public class Issue extends BaseModel {
     @Column(name = "issue_project_id")
     private Integer projectId;
     private Boolean isAssigned;
+    @JsonProperty("user_id")
+    private Integer userId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "project_id", nullable = false)
@@ -52,9 +56,9 @@ public class Issue extends BaseModel {
     private Project project;
 
     @ManyToMany(mappedBy = "issues")
-    @JsonIgnore
     private List<AppUser> users = new ArrayList<>();
 
+    @JsonProperty("change_log")
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "issue")
     private List<ChangeLog> changeLog;
 

@@ -21,7 +21,7 @@ spring:
   h2:
     console:
       enabled: true
-      path: /h2
+      path: /h2-console
   mail:
     host: smtp.gmail.com
     port: 587
@@ -40,3 +40,14 @@ spring:
 logging:
   file:
     name: /Users/raviyasas/Documents/logs/pms.log
+
+jwt:
+  token:
+    validity: 60000 # 1 minute
+  secret: sfsfsf
+
+refresh:
+  token:
+    validity: 3000000 # 5 minutes
+
+

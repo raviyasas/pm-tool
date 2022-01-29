@@ -11,4 +11,6 @@ public interface UserService {
     ResponseEntity<ApiResponse> assignIssue(AssignIssueRequest assignIssueRequest);
 
     ResponseEntity<ApiResponse> getAll();
+
+    ResponseEntity<ApiResponse> getAllUsernames();
 }

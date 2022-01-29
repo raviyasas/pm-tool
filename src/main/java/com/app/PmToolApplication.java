@@ -5,6 +5,8 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.annotation.PostConstruct;
 import java.io.FileInputStream;
@@ -24,6 +26,8 @@ public class PmToolApplication {
 			//logger.error("error connecting firebase : {} ", e.getMessage());
 		}
 	}
+
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(PmToolApplication.class, args);
